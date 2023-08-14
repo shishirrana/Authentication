@@ -1,0 +1,9 @@
+﻿@using reviseAuthentication.Views.Shared.Components.SearchBar
+@model SPager
+
+<form asp-controller="@Model.Controller" asp-action="@Model.Action">
+    <span class="btn-group float-end mt-5">
+        <input name="SearchText" type="text" class="form-control" placeholder="Search for Students" value="@Model.SearchText" />
+        <input class="btn btn-primary" type="submit" value="Search" />
+    </span>
+</form>

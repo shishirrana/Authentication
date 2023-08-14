@@ -1,0 +1,126 @@
+﻿@model IEnumerable<reviseAuthentication.Models.StudentModel>
+
+@{
+    ViewData["Title"] = "Students";
+
+    //for displaying the S.No.
+
+
+
+    //Pagination
+    Pager pager = new Pager();
+    var pagesize = pager.PageSize;
+    var CurrentPage = pager.CurrentPage;
+
+    int intSno = (pager.PageSize) * ((pager.CurrentPage)-1);
+    int pageNo = 0;
+    if(ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+
+    
+}
+
+
+<vc:search-bar search-pager="@ViewBag.SearchPager"></vc:search-bar>
+
+<h1 style="font-family:'Netflix Sans Icon';">Students</h1>
+
+<br />
+
+<hr />
+
+
+<p>
+    <a asp-action="Create" style="text-decoration:none">New Student?</a>
+</p>
+<table class="table border-dark table-hover">
+    <thead>
+        <tr>
+            <th class="text-center">
+                SN.
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            //Increasing the numbering of SN. by 1
+
+           
+                intSno = intSno + 1;
+
+           
+            <tr>
+                <td class="text-center">
+                    @intSno
+                </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+             <td class="text-center">
+                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                <a class="btn btn-info"asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+@*Pagination*@
+
+<div class="container">
+    @if (pager.TotalPages > 0)
+    {
+        <ul class="pagination justify-content-center">
+            @if (pager.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="StudentModels" asp-action="Index" asp-route-pg="1">First</a>
+                </li>
+                <li>
+                    <a class="page-link" asp-controller="StudentModels" asp-action="Index" asp-route-pg="@(pager.CurrentPage-1)">Previous</a>
+                </li>
+            }
+
+
+
+
+
+            @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+            {
+                <li class="page-item @(pge == pager.CurrentPage? "active" : "")">
+                    <a class="page-link" asp-controller="StudentModels" asp-action="Index" asp-route-pg="@pge">@pge</a>
+                </li>
+            }   
+
+           @* For Next and Last Button*@
+
+            @if (pager.CurrentPage<pager.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="StudentModels" asp-action="Index" asp-route-pg="@(pager.CurrentPage + 1)">Next</a>
+                </li>
+                 <li class="page-item">
+                    <a class="page-link" asp-controller="StudentModels" asp-action="Index" asp-route-pg="@(pager.TotalPages)">Last</a>
+                </li>
+            }
+
+       </ul>
+    }
+
+
+</div>
